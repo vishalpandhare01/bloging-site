@@ -1,0 +1,25 @@
+<div class="d-flex justify-content-center flex-wrap p-3 border">
+  <div class="d-flex flex-wrap p-2" *ngFor="let blog of blogs">
+    <div class="card m-2" style="width: 18rem">
+      <!-- <img src="..." class="card-img-top" alt="..."> -->
+      <div class="card-body">
+        <h5 class="card-title">{{ blog.blog.title }}</h5>
+        <p class="card-text" id="more">
+          {{ blog.blog.description.substring(200, 0) }}...
+        </p>
+        <!-- {{blog.user.Id}}
+        {{loginUser.Id}} -->
+        <div class="d-flex justify-content-between">
+          <button class="btn btn-dark" 
+          *ngIf="loginUser && loginUser.Id === blog.user.Id"
+          >
+            <span (click)="deleteBlog(blog.id)">delete</span>
+          </button>
+          <button class="btn btn-primary" (click)="getBlog(blog.id)">
+            view
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

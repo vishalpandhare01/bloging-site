@@ -1,0 +1,106 @@
+<div class="container my-5">
+  <div class="card p-2">
+    <h3>{{ blog.blog.title }}</h3>
+    <div>
+      <p>{{ blog.blog.description }}</p>
+    </div>
+  </div>
+  <button
+    type="button"
+    class="btn btn-primary"
+    data-bs-toggle="modal"
+    data-bs-target="#staticBackdrop"
+    *ngIf="loginUser && loginUser.Id === blog.user.Id"
+    >
+    Edit
+  </button>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade w-100"
+  id="staticBackdrop"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="d-flex justify-content-end p-2">
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form
+        action=""
+        [formGroup]="createBlog"
+        class="p-3"
+        (ngSubmit)="onSubmit()"
+      >
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Title</label>
+          <input
+            type="text"
+            class="form-control"
+            id="exampleFormControlInput1"
+            placeholder="Title"
+            formControlName="title"
+          />
+        </div>
+        <div
+          *ngIf="
+            getFormErrors('title')?.required &&
+            createBlog.controls['title'].touched
+          "
+          class="error-message"
+        >
+          Title is required.
+        </div>
+        <div *ngIf="getFormErrors('title')?.minlength" class="error-message">
+          Title must be at least 15 characters long.
+        </div>
+        <div *ngIf="getFormErrors('title')?.maxlength" class="error-message">
+          Title cannot exceed 50 characters.
+        </div>
+        <div class="mb-3">
+          <label for="exampleFormControlTextarea1" class="form-label"
+            >Content</label
+          >
+          <textarea
+            class="form-control"
+            id="exampleFormControlTextarea1"
+            rows="5"
+            formControlName="description"
+          ></textarea>
+          <div
+            *ngIf="
+              getFormErrors('description')?.required &&
+              createBlog.controls['description'].description
+            "
+            class="error-message"
+          >
+            description is required.
+          </div>
+          <div
+            *ngIf="getFormErrors('description')?.minlength"
+            class="error-message"
+          >
+            description must be at least 300 characters long.
+          </div>
+          <div
+            *ngIf="getFormErrors('description')?.maxlength"
+            class="error-message"
+          >
+            description cannot exceed 500 characters.
+          </div>
+        </div>
+        <button class="btn btn-success">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,58 @@
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <a class="navbar-brand" href="#">Blog Buddy</a>
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              routerLink="login"
+              *ngIf="elementShow; else content"
+              >Login</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="register" *ngIf="elementShow"
+              >Register</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="blogs" aria-current="page">Blogs</a>
+          </li>
+          <ng-template #content>
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" routerLink="create-blog">Create Blog</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/">Profile</a>
+              </li>
+            </ul>
+          </ng-template>
+        </ul>
+      </div>
+      <div class="float-rigt">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <button class="btn btn-outline-dark" *ngIf="!elementShow" (click)="logOut()">
+              LogOut
+            </button>
+          </li>
+          <li></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>

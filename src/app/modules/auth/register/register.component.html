@@ -1,0 +1,86 @@
+<div *ngIf ="userRegister else content" class="container my-5 p-4 bg-light">
+  <h3>Register</h3>
+  <form action="" [formGroup]="registerUser" (ngSubmit)="onSubmit()">
+    <div class="mb-3 row">
+      <label for="staticname" class="col-sm-2 col-form-label">name</label>
+      <div class="col-sm-10">
+        <input
+          type="text"
+          class="form-control"
+          id="staticname"
+          placeholder="name"
+          formControlName="name"
+          required
+        />
+      </div>
+      <div
+        *ngIf="
+          getFormErrors('name')?.required &&
+          registerUser.controls['name'].touched
+        "
+      >
+        Name is required.
+      </div>
+    </div>
+    <div class="mb-3 row">
+      <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+      <div class="col-sm-10">
+        <input
+          type="text"
+          class="form-control"
+          id="staticEmail"
+          placeholder="email@example.com"
+          required
+          formControlName="email"
+        />
+      </div>
+      <div
+        *ngIf="
+          getFormErrors('email')?.email &&
+          registerUser.controls['email'].touched
+        "
+      >
+        Invalid email format.
+      </div>
+    </div>
+    <div class="mb-3 row">
+      <label for="inputPassword" class="col-sm-2 col-form-label"
+        >Password</label
+      >
+      <div class="col-sm-10">
+        <input
+          type="password"
+          class="form-control"
+          id="inputPassword"
+          placeholder="****"
+          formControlName="password"
+        />
+      </div>
+      <div
+        *ngIf="
+          getFormErrors('password')?.pattern &&
+          registerUser.controls['password'].touched
+        "
+      >
+        Password must be maximum 8 characters long.
+        minimum one capital letter,  one small letter,  one number and , one special characters
+      </div>
+    </div>
+    <div class="d-grid gap-2 col-12 mx-auto">
+      <button class="btn btn-primary" type="submit">Submit</button>
+    </div>
+  </form>
+</div>
+<ng-template #content>
+  <div class="card">
+    <div class="card-header">
+      Done
+    </div>
+    <div class="card-body p-3">
+      <blockquote class="blockquote mb-0 bg-success.bg-gradient">
+        <p>Registration Successful</p>
+        <a href="/login">Login</a>
+      </blockquote>
+    </div>
+  </div>
+</ng-template>
