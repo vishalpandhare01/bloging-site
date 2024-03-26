@@ -36,6 +36,10 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     if (this.loginUser.valid) {
       let data = localStorage.getItem('users') as string;
+      if(!data){
+        alert("No user found")
+        return
+      }
       let allUsers = JSON.parse(data).filter((el: any) => el != null);
       console.log(this.loginUser.value);
       allUsers.forEach((el: any) => {
