@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit } from '@angular/core';
+import { DefaultBlogs } from '../../../core/constant/defaultblog';
+import { BlogService } from '../../../services/blog/blog.service';
 
 @Component({
   selector: 'app-get-blogs',
@@ -8,24 +10,24 @@ import { Component, OnInit } from '@angular/core';
   standalone: true,
   imports: [CommonModule],
 })
-export class GetBlogsComponent implements OnInit {
+export class GetBlogsComponent implements OnChanges {
   // const randomId = Math.floor(Math.random() * 900000000000) + 100000000000;
   token = localStorage.getItem('token') as string;
   loginUser = !this.token ? null : JSON.parse(this.token);
-  data = localStorage.getItem('blogs') as string;
-  blogs = JSON.parse(this.data).filter((el: any) => el !== null);
+  blogs: any[] = [];
+  tempBlog = DefaultBlogs;
 
-  ngOnInit(): void {
-    console.log(this.loginUser)
-    console.log("loginUser",this.loginUser)
+  constructor(private blogsData: BlogService) {
+    this.blogs = this.blogsData.blogServices();
+  }
+  
+  ngOnChanges(): void {
+   
   }
 
-  deleteBlog(id: any) {
-    let index = this.blogs.findIndex((e: any) => e.id === id);
-    console.log(index);
-    this.blogs.splice(index, 1);
-    const blogData = JSON.stringify(this.blogs);
-    localStorage.setItem('blogs', blogData);
+  deleteBlog(id: number) {
+    this.blogsData.deleteBlog(id);
+    location.reload();
   }
 
   getBlog(id: any) {

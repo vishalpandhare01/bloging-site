@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { BlogService } from '../../../services/blog/blog.service';
 
 @Component({
   selector: 'app-create-blogs',
@@ -11,8 +12,8 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 })
 export class CreateBlogsComponent implements OnInit {
   formBuilder = new FormBuilder();
-  isBlogCreated=false
-  newBlog:any
+  isBlogCreated = false;
+  newBlog: any;
   createBlog: any;
 
   ngOnInit(): void {
@@ -36,47 +37,16 @@ export class CreateBlogsComponent implements OnInit {
     });
   }
 
-  setSubmitData() {
-    let token = localStorage.getItem('token') as string;
-    let user = JSON.parse(token);
-    let data = localStorage.getItem('blogs') as string;
-    let allBlog = JSON.parse(data);
-    if (allBlog) {
-      allBlog = allBlog.filter((el:any)=>el !== null)
-      const newBlog = {
-        id: allBlog.length++,
-        user: user,
-        blog: this.createBlog.value,
-      };
-      allBlog.push(newBlog)
-      console.log(allBlog)
-      this.newBlog = newBlog
-      let b = JSON.stringify(allBlog)
-      localStorage.setItem("blogs",b)
-    }else{
-      let firstBlog: any[] = [
-        {
-          id: 0,
-          user: user,
-          blog: this.createBlog.value
-          ,
-        }
-      ]
-      this.newBlog = firstBlog
-      let b = JSON.stringify(firstBlog)
-      localStorage.setItem("blogs",b)
-    }
-   this.isBlogCreated = true
-   console.log("newblog",this.newBlog)
-  }
+  constructor(private setBlogData: BlogService) {}
 
   onSubmit() {
     console.log(this.createBlog);
     if (this.createBlog.valid) {
-      this.setSubmitData()
+      this.setBlogData.setBlogServices(this.createBlog);
+      this.isBlogCreated = true;
       console.log('Form is valid. Data submitted.');
     } else {
-      alert("Please write blog")
+      alert('Please write blog');
       console.log('Form is invalid. Cannot submit data.');
     }
   }

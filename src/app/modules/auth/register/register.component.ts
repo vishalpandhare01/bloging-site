@@ -6,6 +6,7 @@ import {
   Validators,
   FormGroup,
 } from '@angular/forms';
+import { AuthService } from '../../../services/auth/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -14,10 +15,13 @@ import {
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
 })
+
 export class RegisterComponent implements OnInit {
   formBuilder = new FormBuilder();
   registerUser: any;
-  userRegister = true
+  userRegister = true;
+
+  constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
     this.registerUser = this.formBuilder.group({
@@ -31,32 +35,9 @@ export class RegisterComponent implements OnInit {
   }
 
   setFormData() {
-    let localData = localStorage.getItem('users') as string;
-    let previousUser: any = JSON.parse(localData);
-    let Data;
-    let newUsers;
-    if (previousUser) {
-      Data = {
-        id: previousUser.length++,
-        ...this.registerUser.value,
-      };
-      newUsers = [...previousUser, Data];
-    } else {
-      Data = {
-        id: 0,
-        ...this.registerUser.value,
-      };
-      newUsers = [Data];
-    }
-    console.log(this.registerUser.value);
-    localStorage.setItem('users', JSON.stringify(newUsers));
-    console.log(this.registerUser);
-    console.log(this.registerUser.valid);
-    alert('You are Register successfully');
-    this.registerUser.reset();
-    this.userRegister = false
+    this.authService.registerUserService(this.registerUser);
+    this.userRegister = false;
   }
-
 
   onSubmit() {
     console.log('Form validity:', this.registerUser.valid);

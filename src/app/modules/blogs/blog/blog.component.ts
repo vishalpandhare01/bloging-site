@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+
 import {
   FormBuilder,
   FormGroup,
@@ -7,6 +8,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { BlogService } from '../../../services/blog/blog.service';
 
 @Component({
   selector: 'app-blog',
@@ -15,6 +17,7 @@ import {
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
 })
+
 export class BlogComponent implements OnInit {
   token = localStorage.getItem('token') as string
   loginUser = JSON.parse(this.token)
@@ -25,6 +28,10 @@ export class BlogComponent implements OnInit {
   newBlog: any;
   createBlog: any;
   showDeleteButton = false
+
+  constructor(private updateBlog:BlogService){
+
+  }
 
   ngOnInit(): void {
     this.createBlog = this.formBuilder.group({
@@ -49,21 +56,7 @@ export class BlogComponent implements OnInit {
 
   setSubmitData() {
     let id = this.blog.id;
-    let b = localStorage.getItem('blogs') as string;
-    let data = JSON.parse(b).filter((el: any) => el !== null);
-    data.forEach((el: any, i: number) => {
-      if (el.id === id) {
-        data[i] = {
-          id: id,
-          user: this.blog.user,
-          blog: this.createBlog.value,
-        };
-        let editedBlog = JSON.stringify(data[i]);
-        localStorage.setItem('blog', editedBlog);
-      }
-    });
-    let blogsArray = JSON.stringify(data);
-    localStorage.setItem('blogs', blogsArray);
+    this.updateBlog.updateBlog(id ,this.createBlog ,this.blog)
     location.reload();
   }
 
