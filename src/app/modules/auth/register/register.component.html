@@ -15,7 +15,7 @@
       </div>
       <div
         *ngIf="
-          getFormErrors('name')?.required &&
+          getFormErrors('name')?.['required'] &&
           registerUser.controls['name'].touched
         "
       >
@@ -36,7 +36,7 @@
       </div>
       <div
         *ngIf="
-          getFormErrors('email')?.email &&
+          getFormErrors('email')?.['email'] &&
           registerUser.controls['email'].touched
         "
       >
@@ -58,7 +58,7 @@
       </div>
       <div
         *ngIf="
-          getFormErrors('password')?.pattern &&
+          getFormErrors('password')?.['pattern'] &&
           registerUser.controls['password'].touched
         "
       >

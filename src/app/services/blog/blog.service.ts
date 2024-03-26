@@ -1,38 +1,39 @@
 import { Injectable } from '@angular/core';
+import { blog } from '../../core/models/interfaces';
+import { FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root',
 })
-
 export class BlogService {
   data = localStorage.getItem('blogs') as string;
   token = localStorage.getItem('token') as string;
   user = JSON.parse(this.token);
-  blogsData: any[] = [];
+  blogsData: blog[] = [];
   isBlogCreated = false;
-  newBlog: any;
-  createBlog: any;
-  blog: any;
+  newBlog!: any;
+  createBlog!: FormGroup;
+  blog!: FormGroup;
   constructor() {}
 
   blogServices() {
     console.log(this.data);
     if (this.data) {
-      this.blogsData = JSON.parse(this.data).filter((el: any) => el !== null);
+      this.blogsData = JSON.parse(this.data).filter((el: blog) => el !== null);
       return (this.blogsData = [...this.blogsData]);
     }
     return this.blogsData;
   }
 
-  ngOnInt(){
-    this.blogServices()
+  ngOnInt() {
+    this.blogServices();
   }
 
-  setBlogServices(createBlogData:any) {
-    this.createBlog = createBlogData
+  setBlogServices(createBlogData: FormGroup) {
+    this.createBlog = createBlogData;
     let allBlog = JSON.parse(this.data);
     if (allBlog) {
-      allBlog = allBlog.filter((el: any) => el !== null);
+      allBlog = allBlog.filter((el: blog) => el !== null);
       const newBlog = {
         id: allBlog.length++,
         user: this.user,
@@ -57,18 +58,18 @@ export class BlogService {
     }
   }
 
-  deleteBlog(id:number){
-    const blogs = this.blogServices()
-    let index = blogs.findIndex((e: any) => e.id === id);
+  deleteBlog(id: number) {
+    const blogs = this.blogServices();
+    let index = blogs.findIndex((e: blog) => e.id === id);
     console.log(index);
     blogs.splice(index, 1);
     const blogData = JSON.stringify(blogs);
     localStorage.setItem('blogs', blogData);
   }
 
-  updateBlog(id :number ,createBlog:any ,blog:any){
+  updateBlog(id: number, createBlog: FormGroup, blog: blog) {
     let data = this.blogServices();
-    data.forEach((el: any, i: number) => {
+    data.forEach((el: blog, i: number) => {
       if (el.id === id) {
         data[i] = {
           id: id,
@@ -82,5 +83,4 @@ export class BlogService {
     let blogsArray = JSON.stringify(data);
     localStorage.setItem('blogs', blogsArray);
   }
-
 }

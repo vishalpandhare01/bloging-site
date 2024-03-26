@@ -9,6 +9,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { BlogService } from '../../../services/blog/blog.service';
+import { blog } from '../../../core/models/interfaces';
 
 @Component({
   selector: 'app-blog',
@@ -25,8 +26,8 @@ export class BlogComponent implements OnInit {
   blog = JSON.parse(this.data);
   formBuilder = new FormBuilder();
   isBlogCreated = false;
-  newBlog: any;
-  createBlog: any;
+  newBlog!: blog;
+  createBlog!: FormGroup;
   showDeleteButton = false
 
   constructor(private updateBlog:BlogService){

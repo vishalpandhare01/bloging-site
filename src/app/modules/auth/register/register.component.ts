@@ -15,10 +15,9 @@ import { AuthService } from '../../../services/auth/auth.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
 })
-
 export class RegisterComponent implements OnInit {
   formBuilder = new FormBuilder();
-  registerUser: any;
+  registerUser!: FormGroup;
   userRegister = true;
 
   constructor(private authService: AuthService) {}

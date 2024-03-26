@@ -12,16 +12,16 @@
     </div>
     <div
       *ngIf="
-        getFormErrors('title')?.required && createBlog.controls['title'].touched
+        getFormErrors('title')?.['required'] && createBlog.controls['title'].touched
       "
       class="error-message"
     >
       Title is required.
     </div>
-    <div *ngIf="getFormErrors('title')?.minlength" class="error-message">
+    <div *ngIf="getFormErrors('title')?.['minlength']" class="error-message">
       Title must be at least 15 characters long.
     </div>
-    <div *ngIf="getFormErrors('title')?.maxlength" class="error-message">
+    <div *ngIf="getFormErrors('title')?.['maxlength']" class="error-message">
       Title cannot exceed 50 characters.
     </div>
     <div class="mb-3">
@@ -36,21 +36,20 @@
       ></textarea>
       <div
         *ngIf="
-          getFormErrors('description')?.required &&
-          createBlog.controls['description'].description
+          getFormErrors('description')?.['required'] 
         "
         class="error-message"
       >
         description is required.
       </div>
       <div
-        *ngIf="getFormErrors('description')?.minlength"
+        *ngIf="getFormErrors('description')?.['minlength']"
         class="error-message"
       >
         description must be at least 300 characters long.
       </div>
       <div
-        *ngIf="getFormErrors('description')?.maxlength"
+        *ngIf="getFormErrors('description')?.['maxlength']"
         class="error-message"
       >
         description cannot exceed 500 characters.

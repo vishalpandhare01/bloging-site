@@ -6,9 +6,11 @@ import {
   FormsModule,
   Validator,
   FormBuilder,
+  FormGroup,
 } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { AuthService } from '../../../services/auth/auth.service';
+import { user } from '../../../core/models/interfaces';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -18,7 +20,7 @@ import { AuthService } from '../../../services/auth/auth.service';
 })
 export class LoginComponent implements OnInit {
   formBuilder = new FormBuilder();
-  loginUser: any;
+  loginUser!: FormGroup;
   userExist = false;
 
   constructor(private authServices: AuthService) {}
@@ -42,9 +44,9 @@ export class LoginComponent implements OnInit {
         alert('No user found');
         return;
       }
-      let allUsers = JSON.parse(data).filter((el: any) => el != null);
+      let allUsers = JSON.parse(data).filter((el: user) => el != null);
       console.log(this.loginUser.value);
-      allUsers.forEach((el: any) => {
+      allUsers.forEach((el: user) => {
         if (
           el.email === this.loginUser.value.email &&
           el.password === this.loginUser.value.password

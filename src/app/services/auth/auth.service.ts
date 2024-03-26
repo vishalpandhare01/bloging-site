@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { user } from '../../core/models/interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -8,9 +9,9 @@ export class AuthService {
   userRegister = true;
 
   constructor() {}
-  registerUserService(registerUser:any) {
+  registerUserService(registerUser:FormGroup) {
     let localData = localStorage.getItem('users') as string;
-    let previousUser: any = JSON.parse(localData);
+    let previousUser: user[] = JSON.parse(localData);
     let Data;
     let newUsers;
     if (previousUser) {
@@ -34,7 +35,7 @@ export class AuthService {
     registerUser.reset();
   }
 
-loginUser(loginUser:any){
+loginUser(loginUser:user){
   let token = JSON.stringify(loginUser);
     localStorage.setItem('token', token);
     alert('login successfully');

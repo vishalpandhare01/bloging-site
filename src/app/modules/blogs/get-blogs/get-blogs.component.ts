@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnChanges, OnInit } from '@angular/core';
 import { DefaultBlogs } from '../../../core/constant/defaultblog';
 import { BlogService } from '../../../services/blog/blog.service';
+import { blog } from '../../../core/models/interfaces';
 
 @Component({
   selector: 'app-get-blogs',
@@ -30,8 +31,8 @@ export class GetBlogsComponent implements OnChanges {
     location.reload();
   }
 
-  getBlog(id: any) {
-    let b = this.blogs.filter((el: any) => el.id === id)[0];
+  getBlog(id: number) {
+    let b = this.blogs.filter((el: blog) => el.id === id)[0];
     b = JSON.stringify(b);
     localStorage.setItem('blog', b);
     location.replace('get-blog');

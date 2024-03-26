@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { BlogService } from '../../../services/blog/blog.service';
+import { blog } from '../../../core/models/interfaces';
 
 @Component({
   selector: 'app-create-blogs',
@@ -13,8 +14,8 @@ import { BlogService } from '../../../services/blog/blog.service';
 export class CreateBlogsComponent implements OnInit {
   formBuilder = new FormBuilder();
   isBlogCreated = false;
-  newBlog: any;
-  createBlog: any;
+  newBlog!: blog;
+  createBlog!: FormGroup;
 
   ngOnInit(): void {
     this.createBlog = this.formBuilder.group({
