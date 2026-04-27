@@ -4,7 +4,7 @@ from app.schemas.user_schemas import User ,UserCreate ,Userlogin
 from app.config.database import get_db
 from app.view.user_view import create_user_in_db , get_user_by_email , get_user
 from sqlalchemy.orm import Session
-from app.utils.jwt_token import create_access_token , verify_token
+from app.middelware.jwt_token import create_access_token , verify_token
 from app.utils.password_hash import verify_password
 from fastapi.security import OAuth2PasswordBearer
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
