@@ -19,3 +19,4 @@ class User(UserBase):
     model_config = {
         "from_attributes": True
     }
+

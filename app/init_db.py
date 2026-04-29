@@ -1,5 +1,6 @@
 from app.config.database import Base , engine
 from app.model.user_model import User
+from app.model.blog_model import Blog
 from sqlalchemy import inspect
 
 def init_db():
