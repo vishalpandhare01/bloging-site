@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from app.model.user_model import User
 from app.schemas.blog_schemas import BlogCreate
 from app.model.blog_model import Blog 
-from sqlalchemy.orm import joinedload , load_only
+from sqlalchemy.orm import joinedload , load_only , selectinload
 
 def get_blog(db: Session, blog_id: str):
     return db.query(Blog).filter(Blog.id == blog_id).first()
@@ -12,13 +12,14 @@ def get_blogs_from_db(db: Session, skip: int = 0, limit: int = 100):
     return(
         db.query(Blog).
         options(
-            joinedload(Blog.author).
+            selectinload(Blog.author).
             load_only(
                 User.id,
                 User.name,
                 User.email
             )
         ).
+        order_by(Blog.created_at.desc()).
         offset(skip).
         limit(limit).
         all()
