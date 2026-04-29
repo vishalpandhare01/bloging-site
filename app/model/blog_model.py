@@ -1,4 +1,4 @@
-from sqlalchemy import Column, DateTime, Enum, ForeignKey, Integer, String, Text ,UUID
+from sqlalchemy import Column, DateTime, Enum, ForeignKey, Integer, String, Text ,UUID ,Boolean
 from sqlalchemy.orm import relationship
 from app.config.database import Base
 from datetime import datetime
@@ -9,11 +9,12 @@ class Blog(Base):
     id = Column(String, primary_key=True,default=lambda: str(uuid.uuid4()) , index=True)
     title = Column(String, index=True)
     description = Column(String)
-    text = Column(String)
+    text = Column(Text)
     author_id = Column(String, ForeignKey("users.id"), nullable=False)
     author = relationship("User")
     created_at = Column(DateTime, default=datetime.utcnow)
     comments = relationship("Comments", back_populates="blog")
+    is_deleted = Column(Boolean, default=False)
 
 class Comments(Base):
     __tablename__="comments"
