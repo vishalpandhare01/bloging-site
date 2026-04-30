@@ -23,3 +23,7 @@ class Blog(BlogBase):
         "from_attributes": True
     }
 
+from pydantic import BaseModel
+from typing import List, Optional
+
+

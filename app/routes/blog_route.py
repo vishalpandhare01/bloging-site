@@ -7,7 +7,8 @@ from app.view.blog_view import (
     get_blogs_from_db , 
     get_blog , 
     update_blog_in_db ,
-    delete_blog_in_db)
+    delete_blog_in_db,
+    )
 from sqlalchemy.orm import Session
 from app.middelware.jwt_token import verify_token
 from fastapi.security import OAuth2PasswordBearer
@@ -27,9 +28,15 @@ def create_blog(blog: BlogCreate, token: str = Depends(oauth2_scheme), db: Sessi
 
     return create_blog_in_db(db=db, blog=blog, user_id=user_id)
 
-@blog_router.get("/api/v1/blogs/", response_model=list[Blog])
-def get_blogs(title : str = None, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    return get_blogs_from_db(db=db, skip=skip, limit=limit, title=title)
+@blog_router.get("/api/v1/blogs/")
+def get_blogs(title : str = None, cursor: str = None, limit: int = 100, db: Session = Depends(get_db)):
+
+    data, next_c = get_blogs_from_db(db, cursor, limit ,title=title)
+
+    return {
+        "data": data,
+        "next_cursor": next_c,
+    }
 
 @blog_router.get("/api/v1/blog/{blog_id}", response_model=Blog)
 def get_blog_by_id(blog_id: str, db: Session = Depends(get_db)):
