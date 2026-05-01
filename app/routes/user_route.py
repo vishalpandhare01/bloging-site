@@ -1,5 +1,5 @@
 
-from fastapi import APIRouter , Depends , HTTPException
+from fastapi import APIRouter , Depends , HTTPException , Response , Request
 from app.schemas.user_schemas import User ,UserCreate ,Userlogin
 from app.config.database import get_db
 from app.view.user_view import create_user_in_db , get_user_by_email , get_user
@@ -18,8 +18,8 @@ async def create_user(user: UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Email already registered")
     return create_user_in_db(db=db, user=user)
 
-@user_router.post("/api/v1/login/")
-def login(form_data: Userlogin ,db: Session = Depends(get_db) ):
+@user_router.post("/api/v1/login/" )
+def login(response: Response , form_data: Userlogin ,db: Session = Depends(get_db) ):
     user = get_user_by_email(db, email=form_data.email)
 
     if not user:
@@ -30,10 +30,20 @@ def login(form_data: Userlogin ,db: Session = Depends(get_db) ):
 
     token = create_access_token({"sub": form_data.email , "user_id":user.id})
 
-    return {"access_token": token, "token_type": "bearer"}
+    response.set_cookie(
+        key="access_token",
+        value=token,
+        httponly=True,
+        secure=True,
+        samesite="lax"
+    )
+
+    return {"access_token": token}
 
 @user_router.get("/api/v1/user/", response_model=User)
-def get_login_user(token: str = Depends(oauth2_scheme) ,db: Session = Depends(get_db) ):
+def get_login_user(request: Request ,db: Session = Depends(get_db) ):
+    token = request.cookies.get("access_token")
+
     payload = verify_token(token)
     if not payload:
         raise HTTPException(status_code=401, detail="Invalid token")

@@ -13,6 +13,8 @@ def create_access_token(data: dict):
 
 def verify_token(token: str):
     try:
+        if not token:
+           return {"error": "Not authenticated"}
         payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
         return payload
     except JWTError:

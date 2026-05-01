@@ -1,5 +1,5 @@
 
-from fastapi import APIRouter , Depends , HTTPException
+from fastapi import APIRouter , Depends , HTTPException , Request
 from app.schemas.blog_schemas import Blog , BlogCreate
 from app.config.database import get_db
 from app.view.blog_view import (
@@ -17,7 +17,9 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 blog_router = APIRouter()
 
 @blog_router.post("/api/v1/blog/", response_model=Blog)
-def create_blog(blog: BlogCreate, token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+def create_blog(blog: BlogCreate, request: Request, db: Session = Depends(get_db)):
+    
+    token = request.cookies.get("access_token")
     payload = verify_token(token)
     if not payload:
         raise HTTPException(status_code=401, detail="Invalid token")
@@ -46,7 +48,9 @@ def get_blog_by_id(blog_id: str, db: Session = Depends(get_db)):
     return db_blog
 
 @blog_router.put("/api/v1/blog/{blog_id}", response_model=Blog)
-def update_blog(blog_id: str, blog: BlogCreate, token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+def update_blog(blog_id: str, blog: BlogCreate, request: Request, db: Session = Depends(get_db)):
+    
+    token = request.cookies.get("access_token")
     payload = verify_token(token)
     if not payload:
         raise HTTPException(status_code=401, detail="Invalid token")
@@ -61,7 +65,9 @@ def update_blog(blog_id: str, blog: BlogCreate, token: str = Depends(oauth2_sche
     return db_blog
 
 @blog_router.delete("/api/v1/blog/{blog_id}")
-def delete_blog(blog_id: str, token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+def delete_blog(blog_id: str, request: Request, db: Session = Depends(get_db)):
+    
+    token = request.cookies.get("access_token")
     payload = verify_token(token)
     if not payload:
         raise HTTPException(status_code=401, detail="Invalid token")
