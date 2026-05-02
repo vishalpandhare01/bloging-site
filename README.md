@@ -146,3 +146,5 @@ This project is a simple yet powerful blogging platform built using **FastAPI**,
 * Rich text editor for blogs
 * Image upload support
 * Role-based access (Admin/User)
+
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload

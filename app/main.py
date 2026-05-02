@@ -6,7 +6,9 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 origins = [
-    "http://localhost:3000",   
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "https://the-daily-spark.vercel.app"
 ]
 
 app.add_middleware(

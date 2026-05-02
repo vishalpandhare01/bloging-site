@@ -35,10 +35,12 @@ def login(response: Response , form_data: Userlogin ,db: Session = Depends(get_d
         value=token,
         httponly=True,
         secure=True,
-        samesite="lax"
+        samesite="none",
+        path="/",
+        domain=None
     )
 
-    return {"access_token": token}
+    return {"message": "login"}
 
 @user_router.get("/api/v1/user/", response_model=User)
 def get_login_user(request: Request ,db: Session = Depends(get_db) ):

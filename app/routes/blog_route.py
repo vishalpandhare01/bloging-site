@@ -20,6 +20,7 @@ blog_router = APIRouter()
 def create_blog(blog: BlogCreate, request: Request, db: Session = Depends(get_db)):
     
     token = request.cookies.get("access_token")
+    print(token)
     payload = verify_token(token)
     if not payload:
         raise HTTPException(status_code=401, detail="Invalid token")
